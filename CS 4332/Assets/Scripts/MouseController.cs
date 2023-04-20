@@ -109,12 +109,14 @@ public class MouseController : MonoBehaviour
         //Reference to the node's z position. Otherwise Vector3 would set z to 0. 
         var zIndex = path[0].transform.position.z;
         //Identify x and y values.
-        character.transform.position = Vector2.MoveTowards(character.transform.position, path[0].transform.position, step);
+        Vector2 destination = new Vector2(path[0].transform.position.x, path[0].transform.position.y + 0.5f);
+        character.transform.position = Vector2.MoveTowards(character.transform.position, destination, step);
+        //character.transform.position = Vector2.MoveTowards(character.transform.position, path[0].transform.position, step);
         //Add zIndex along with the Vector2 into a new Vector3.
         character.transform.position = new Vector3(character.transform.position.x, character.transform.position.y, zIndex);
 
         //0.0001f is for rendering the character correctly, say when a block is in front of them.
-        if(Vector2.Distance(character.transform.position, path[0].transform.position) < 0.0001f)
+        if(Vector2.Distance(character.transform.position, destination) < 0.0001f)
         {
             PositionCharacterOnTile(path[0]);
             path.RemoveAt(0);
@@ -150,7 +152,7 @@ public class MouseController : MonoBehaviour
     //Position and render the character on the overlay tile.
     private void PositionCharacterOnTile(OverlayTile tile)
     {
-        character.transform.position = new Vector3(tile.transform.position.x, tile.transform.position.y + 0.0001f, tile.transform.position.z);
+        character.transform.position = new Vector3(tile.transform.position.x, tile.transform.position.y + 0.0001f + 0.5f, tile.transform.position.z);
         character.GetComponent<SpriteRenderer>().sortingOrder = tile.GetComponent<SpriteRenderer>().sortingOrder;
         character.activeTile = tile;
     }
