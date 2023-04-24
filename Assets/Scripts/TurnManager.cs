@@ -28,11 +28,11 @@ public class TurnManager : MonoBehaviour
             shouldUpdateTurn = false;
             if (turn == Turn.Player)
             {
-                PlayerTurn();
+                StartCoroutine(PlayerTurn());
             }
             else if (turn == Turn.Enemy)
             {
-                EnemyTurn();
+                StartCoroutine(EnemyTurn());
             }
         }
 
