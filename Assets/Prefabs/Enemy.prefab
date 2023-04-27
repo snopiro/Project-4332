@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2062476635158757412}
   - component: {fileID: 1237704708465269378}
   - component: {fileID: 4969918508497532604}
+  - component: {fileID: 3076482860405858189}
   - component: {fileID: 4997094645091766201}
   - component: {fileID: 2080146638338767081}
   - component: {fileID: 5887077095751374403}
@@ -127,6 +128,23 @@ MonoBehaviour:
   range: 1
   minMoveTime: 1
   maxMoveTime: 2
+--- !u!114 &3076482860405858189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2062476635158757414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad00d2d41889fdf489ec9332f6711d34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 0
+  isMoving: 0
+  activeTile: {fileID: 0}
+  inRangeTiles: []
+  playerControlled: 0
 --- !u!1839735485 &4997094645091766201
 Tilemap:
   m_ObjectHideFlags: 0

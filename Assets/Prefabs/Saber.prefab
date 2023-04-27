@@ -122,7 +122,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad00d2d41889fdf489ec9332f6711d34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 0
+  isMoving: 0
   activeTile: {fileID: 4692055318840391886, guid: c7651e92909531a4ab4e910a0c08669a, type: 3}
+  inRangeTiles: []
+  playerControlled: 1
 --- !u!210 &1305658116018149059
 SortingGroup:
   m_ObjectHideFlags: 0
