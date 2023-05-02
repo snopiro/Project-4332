@@ -6074,7 +6074,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 672162412}
+  - component: {fileID: 672162414}
   - component: {fileID: 672162411}
+  - component: {fileID: 672162413}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -6103,13 +6105,48 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 672162410}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.85106224, y: -0.1495523, z: -3.7822785}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &672162413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 672162410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3762320f6127b174dbb081a6b29164d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCharacters:
+  - {fileID: 6510565176389205922, guid: 1844e321727cdf741b36c495e678ef70, type: 3}
+  enemyCharacters:
+  - {fileID: 2062476635158757414, guid: 067d400b5b1797246977ef740e70fd5f, type: 3}
+  - {fileID: 2062476635158757414, guid: 067d400b5b1797246977ef740e70fd5f, type: 3}
+  playerSpawn: {x: -13, y: -2}
+  enemySpawn: {x: 11, y: 2}
+  gm: {fileID: 672162414}
+--- !u!114 &672162414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 672162410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92780983e360f64468f6c545c2b6bed0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mc: {fileID: 810780910}
+  playerCharacters: []
+  enemyCharacters: []
 --- !u!1 &744374098
 GameObject:
   m_ObjectHideFlags: 0
@@ -6231,7 +6268,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5a8fec93c91cbd469c4e22848eaaf64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
   characterPrefab: {fileID: 6510565176389205922, guid: 1844e321727cdf741b36c495e678ef70, type: 3}
 --- !u!212 &810780911
 SpriteRenderer:

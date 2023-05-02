@@ -19,7 +19,7 @@ public class EnemyMovement : MonoBehaviour
     {
         // Set initial movement direction
         Vector2 direction = moveDirections[Random.Range(0, moveDirections.Length)];
-        StartCoroutine(Move(direction));
+        //StartCoroutine(Move(direction));
     }
 
         IEnumerator Move(Vector2 direction)

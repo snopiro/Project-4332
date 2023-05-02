@@ -57,14 +57,9 @@ public class MouseController : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
-                if (character == null)
-                {
-                    tile.GetComponent<OverlayTile>().ShowTile();
-                    character = Instantiate(characterPrefab).GetComponentInChildren<CharacterInfo>();
-                    character.PositionCharacterOnTile(tile);
-                    character.GetInRangeTiles();
-                }
-                else if (character.inRangeTiles.Contains(tile))
+                Debug.Log("Current Tile: " + tile.gridLocation);
+                Debug.Log("Character: " + character);
+                if (character.inRangeTiles.Contains(tile))
                 {
                     tile.GetComponent<OverlayTile>().ShowTile();
                     character.isMoving = true;
@@ -99,4 +94,13 @@ public class MouseController : MonoBehaviour
         return null;
     }
 
+    //sets character to be controlled by the mouse.
+    public void SetControlledCharacter(CharacterInfo chara)
+    {
+        if(character != null)
+            character.isActivelyControlled = false;
+        Debug.Log("Setting character to " + chara);
+        character = chara;
+        character.isActivelyControlled = true;
+    }
 }
