@@ -127,4 +127,15 @@ public class mapManager : MonoBehaviour
 
         return neighbours;
     }
+
+    //finds and returns overlaytile with specified coordinates
+    public OverlayTile FindTileInScene(Vector2Int coordinates)
+    {
+        OverlayTile tile;
+        if (map.TryGetValue(coordinates, out tile))
+        {
+            return tile;
+        }
+        return null;
+    }
 }
