@@ -13,10 +13,17 @@ public class CharacterInfo : MonoBehaviour
     public bool playerControlled;
     public bool isActivelyControlled;
 
+    [SerializeField] private float maxHealth = 3;
+    private float currentHealth;
+    [SerializeField] private Healthbar healthbar;
+
     private void Start()
     {
         isActivelyControlled = false;
         speed = 3.0f;
+
+        currentHealth = maxHealth;
+        healthbar.UpdateHealthBar(maxHealth, currentHealth);
     }
     private void Awake()
     {
@@ -49,7 +56,10 @@ public class CharacterInfo : MonoBehaviour
 
             //Set to false, otherwise would only work for one movement.
             isMoving = false;
+            currentHealth -= 1;
+            healthbar.UpdateHealthBar(maxHealth, currentHealth);
         }
+
     }
 
     public void PositionCharacterOnTile(OverlayTile tile)
