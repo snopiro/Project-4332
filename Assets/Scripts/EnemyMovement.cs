@@ -18,11 +18,11 @@ public class EnemyMovement : MonoBehaviour
     void Start()
     {
         // Set initial movement direction
-        Vector2 direction = moveDirections[Random.Range(0, moveDirections.Length)];
+        //Vector2 direction = moveDirections[Random.Range(0, moveDirections.Length)];
         //StartCoroutine(Move(direction));
     }
 
-        IEnumerator Move(Vector2 direction)
+    IEnumerator Move(Vector2 direction)
     {
         isMoving = true;
 
@@ -63,5 +63,12 @@ public class EnemyMovement : MonoBehaviour
         {
             return;
         }
+    }
+
+    //wrapper for making enemy moves
+    public void CallEnemyMovement()
+    {
+        Vector2 direction = moveDirections[Random.Range(0, moveDirections.Length)];
+        StartCoroutine(Move(direction));
     }
 }

@@ -13,6 +13,7 @@ public class MouseController : MonoBehaviour
     private PathFinder pathFinder;
     private ArrowTranslator arrowTranslator;
     private List<OverlayTile> path = new List<OverlayTile>();
+    public TurnManager tm;
 
     private void Start()
     {
@@ -59,10 +60,12 @@ public class MouseController : MonoBehaviour
             {
                 Debug.Log("Current Tile: " + tile.gridLocation);
                 Debug.Log("Character: " + character);
-                if (character.inRangeTiles.Contains(tile))
+                if (tm.GetPlayerTurn() && character.inRangeTiles.Contains(tile) && !tm.GetPlayerInputLock())
                 {
+                    Debug.Log("Updating Turn...");
+                    tm.UpdateTurn();
                     tile.GetComponent<OverlayTile>().ShowTile();
-                    character.isMoving = true;
+                    character.isMoving = true; 
                 }
             }
         }
@@ -102,5 +105,10 @@ public class MouseController : MonoBehaviour
         Debug.Log("Setting character to " + chara);
         character = chara;
         character.isActivelyControlled = true;
+    }
+
+    public CharacterInfo GetControlledCharacter()
+    {
+        return character;
     }
 }

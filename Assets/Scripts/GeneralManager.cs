@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GeneralManager : MonoBehaviour
@@ -26,6 +27,8 @@ public class GeneralManager : MonoBehaviour
         //Your Function You Want to Call
         //sets player character to first in spawn manager list
         mc.SetControlledCharacter(playerCharacters[0].GetComponent<CharacterInfo>());
+        //turnManager.UpdateTurn();
+        //turnManager.ExecutePlayerTurn();
     }
 
     // Update is called once per frame
