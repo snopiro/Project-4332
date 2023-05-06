@@ -11,6 +11,7 @@ public class CharacterInfo : MonoBehaviour
     private RangeFinder rangeFinder;
     public List<OverlayTile> inRangeTiles = new List<OverlayTile>();
     public bool isActivelyControlled;
+    
 
     public int range;
 

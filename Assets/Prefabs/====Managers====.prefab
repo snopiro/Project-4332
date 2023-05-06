@@ -99,6 +99,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterPrefab: {fileID: 6510565176389205922, guid: 1844e321727cdf741b36c495e678ef70, type: 3}
   tm: {fileID: 2189098185528553934}
+  gm: {fileID: 2189098186915972238}
 --- !u!1 &2189098186497570802
 GameObject:
   m_ObjectHideFlags: 0

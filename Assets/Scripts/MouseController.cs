@@ -14,11 +14,13 @@ public class MouseController : MonoBehaviour
     private ArrowTranslator arrowTranslator;
     private List<OverlayTile> path = new List<OverlayTile>();
     public TurnManager tm;
+    public GeneralManager gm;
 
     private void Start()
     {
         pathFinder = new PathFinder();
         arrowTranslator = new ArrowTranslator();
+        
     }
 
     // Update is called once per frame
@@ -59,11 +61,12 @@ public class MouseController : MonoBehaviour
                 }
             }
 
+
             if (Input.GetMouseButtonDown(0))
             {
                 Debug.Log("Current Tile: " + tile.gridLocation);
                 Debug.Log("Character: " + character);
-                if (tm.GetPlayerTurn() && character.inRangeTiles.Contains(tile) && !tm.GetPlayerInputLock())
+                if (tm.GetPlayerTurn() && character.inRangeTiles.Contains(tile) && !tm.GetPlayerInputLock() && !gm.TileOccupiedByPlayerCharacter(tile))
                 {
                     Debug.Log("Updating Turn...");
                     tm.SendPlayerInput();
