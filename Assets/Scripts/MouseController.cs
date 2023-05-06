@@ -37,22 +37,25 @@ public class MouseController : MonoBehaviour
             //Position mouse where the tile is focused on.
             gameObject.GetComponent<SpriteRenderer>().sortingOrder = tile.GetComponent<SpriteRenderer>().sortingOrder;
 
-            if (character != null && character.inRangeTiles.Contains(tile) && !character.isMoving)
+            if (!tm.GetPlayerInputLock())
             {
-                path = pathFinder.FindPath(character.activeTile, tile, character.inRangeTiles);
-
-                foreach (var item in character.inRangeTiles)
+                if (character != null && character.inRangeTiles.Contains(tile) && !character.isMoving)
                 {
-                    mapManager.Instance.map[item.gridLocation2D].SetArrowSprite(ArrowDirection.None);
-                }
+                    path = pathFinder.FindPath(character.activeTile, tile, character.inRangeTiles);
 
-                for (int i = 0; i < path.Count; i++)
-                {
-                    var previousTile = i > 0 ? path[i - 1] : character.activeTile;
-                    var futureTile = i < path.Count - 1 ? path[i + 1] : null;
+                    foreach (var item in character.inRangeTiles)
+                    {
+                        mapManager.Instance.map[item.gridLocation2D].SetArrowSprite(ArrowDirection.None);
+                    }
 
-                    var arrowDirection = arrowTranslator.TranslateDirection(previousTile, path[i], futureTile);
-                    path[i].SetArrowSprite(arrowDirection);
+                    for (int i = 0; i < path.Count; i++)
+                    {
+                        var previousTile = i > 0 ? path[i - 1] : character.activeTile;
+                        var futureTile = i < path.Count - 1 ? path[i + 1] : null;
+
+                        var arrowDirection = arrowTranslator.TranslateDirection(previousTile, path[i], futureTile);
+                        path[i].SetArrowSprite(arrowDirection);
+                    }
                 }
             }
 

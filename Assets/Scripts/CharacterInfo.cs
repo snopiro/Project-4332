@@ -10,8 +10,9 @@ public class CharacterInfo : MonoBehaviour
     public OverlayTile activeTile;
     private RangeFinder rangeFinder;
     public List<OverlayTile> inRangeTiles = new List<OverlayTile>();
-    public bool playerControlled;
     public bool isActivelyControlled;
+
+    public int range;
 
     private void Start()
     {
@@ -60,23 +61,23 @@ public class CharacterInfo : MonoBehaviour
     }
     public void GetInRangeTiles()
     {
-        if (playerControlled)
-        {
-            foreach (var item in inRangeTiles)
-            {
-                item.HideTile();
-            }
-        }
-
         //3 represents the movement range of the character.
-        inRangeTiles = rangeFinder.GetTilesInRange(activeTile, 4);
+        inRangeTiles = rangeFinder.GetTilesInRange(activeTile, range);
+    }
 
-        if (playerControlled)
+    public void ShowInRangeTiles()
+    {
+        foreach (var item in inRangeTiles)
         {
-            foreach (var item in inRangeTiles)
-            {
-                item.ShowTile();
-            }
+            item.ShowTile();
+        }
+    }
+
+    public void HideInRangeTiles()
+    {
+        foreach (var item in inRangeTiles)
+        {
+            item.HideTile();
         }
     }
 }

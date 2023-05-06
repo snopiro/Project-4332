@@ -40,6 +40,8 @@ public class TurnManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1.1f);
         shouldUpdateTurn = true;
+        yield return new WaitForSeconds(.1f);
+        mc.GetControlledCharacter().GetInRangeTiles();
     }
 
     // Update is called once per frame
@@ -71,11 +73,13 @@ public class TurnManager : MonoBehaviour
         playerInputLock = false;
         //***player turn code goes here***
         mc.SetControlledCharacter(gm.playerCharacters[playerIndex].GetComponent<CharacterInfo>());
+        mc.GetControlledCharacter().ShowInRangeTiles();
 
         Debug.Log("Waiting for player input...");
         yield return new WaitUntil(() => playerHasInputted);
         Debug.Log("Received player input!!!");
         playerInputLock = true;
+        mc.GetControlledCharacter().HideInRangeTiles();
 
 
         //*** player turn code goes above here***

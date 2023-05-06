@@ -126,7 +126,8 @@ MonoBehaviour:
   isMoving: 0
   activeTile: {fileID: 4692055318840391886, guid: c7651e92909531a4ab4e910a0c08669a, type: 3}
   inRangeTiles: []
-  playerControlled: 1
+  isActivelyControlled: 0
+  range: 4
 --- !u!210 &1305658116018149059
 SortingGroup:
   m_ObjectHideFlags: 0

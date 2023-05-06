@@ -144,7 +144,8 @@ MonoBehaviour:
   isMoving: 0
   activeTile: {fileID: 0}
   inRangeTiles: []
-  playerControlled: 0
+  isActivelyControlled: 0
+  range: 4
 --- !u!1839735485 &4997094645091766201
 Tilemap:
   m_ObjectHideFlags: 0
