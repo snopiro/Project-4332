@@ -26,7 +26,7 @@ public class GeneralManager : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
         //Your Function You Want to Call
         //sets player character to first in spawn manager list
-        mc.SetControlledCharacter(playerCharacters[0].GetComponent<CharacterInfo>());
+        //mc.SetControlledCharacter(playerCharacters[0].GetComponent<CharacterInfo>());
         //turnManager.UpdateTurn();
         //turnManager.ExecutePlayerTurn();
     }

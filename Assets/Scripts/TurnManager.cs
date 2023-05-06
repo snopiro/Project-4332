@@ -18,15 +18,28 @@ public class TurnManager : MonoBehaviour
 
     public float delayTime = 1.0f;
     bool shouldUpdateTurn;
+    bool playerHasInputted;
     bool playerInputLock;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         gm = GetComponent<GeneralManager>();
         turn = Turn.Player;
         playerIndex = 0;
         enemyIndex = 0;
+        shouldUpdateTurn = false;
+    }
+
+    private void Start()
+    {
+        StartCoroutine(LateStart());
+    }
+
+    IEnumerator LateStart()
+    {
+        yield return new WaitForSeconds(1.1f);
+        shouldUpdateTurn = true;
     }
 
     // Update is called once per frame
@@ -49,29 +62,39 @@ public class TurnManager : MonoBehaviour
     }
 
     //Coroutines for player and enemy turn
+    //playerInputLock prevents the player from making inputs outside of their turn.
+    //playerHasInputted gets set to true in MouseController.cs after player selects a square to move to
     private IEnumerator PlayerTurn()
     {
-        //***player turn code goes here***
         Debug.Log("Executing Player turn!");
+        playerHasInputted = false;
+        playerInputLock = false;
+        //***player turn code goes here***
         mc.SetControlledCharacter(gm.playerCharacters[playerIndex].GetComponent<CharacterInfo>());
 
+        Debug.Log("Waiting for player input...");
+        yield return new WaitUntil(() => playerHasInputted);
+        Debug.Log("Received player input!!!");
         playerInputLock = true;
+
+
+        //*** player turn code goes above here***
+        //waits certain amount of time before updating next turn
+        yield return new WaitForSeconds(delayTime);
         //sets player index to next in line
         if (playerIndex == gm.playerCharacters.Count() - 1)
         {
-            playerIndex = 0; 
+            playerIndex = 0;
+            Debug.Log("Changing to enemy turn...");
+            turn = Turn.Enemy;
         }
         else
         {
             playerIndex++;
         }
-
         Debug.Log("Setting player index to: " + playerIndex);
 
-        //waits certain amount of time before updating next turn
-        yield return new WaitForSeconds(delayTime);
-        playerInputLock = false;
-        //shouldUpdateTurn = true;
+        shouldUpdateTurn = true;
     }
 
     private IEnumerator EnemyTurn()
@@ -85,6 +108,12 @@ public class TurnManager : MonoBehaviour
         Debug.Log("Executing Enemy Turn!");
         gm.enemyCharacters[enemyIndex].GetComponent<EnemyMovement>().CallEnemyMovement();
 
+        
+
+
+        //***enemy turn code goes above here***
+        //waits certain amount of time before updating next turn
+        yield return new WaitForSeconds(delayTime);
         //sets enemy index to next in line
         if (enemyIndex == gm.enemyCharacters.Count() - 1)
         {
@@ -98,21 +127,12 @@ public class TurnManager : MonoBehaviour
         }
         Debug.Log("Setting enemy index to: " + enemyIndex);
 
-
-        //waits certain amount of time before updating next turn
-        yield return new WaitForSeconds(delayTime);
         shouldUpdateTurn = true;
     }
 
-    public void UpdateTurn()
+    public void SendPlayerInput()
     {
-        if(playerIndex == gm.playerCharacters.Count() - 1)
-        {
-            Debug.Log("Changing to enemy turn...");
-            turn = Turn.Enemy;
-        }
-
-        shouldUpdateTurn = true;
+        playerHasInputted = true;
     }
 
     public bool GetPlayerTurn()
@@ -121,7 +141,6 @@ public class TurnManager : MonoBehaviour
         {
             //Debug.Log("returning player turn as true...");
             return true;
-
         }
         else 
         {

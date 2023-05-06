@@ -63,7 +63,7 @@ public class MouseController : MonoBehaviour
                 if (tm.GetPlayerTurn() && character.inRangeTiles.Contains(tile) && !tm.GetPlayerInputLock())
                 {
                     Debug.Log("Updating Turn...");
-                    tm.UpdateTurn();
+                    tm.SendPlayerInput();
                     tile.GetComponent<OverlayTile>().ShowTile();
                     character.isMoving = true; 
                 }

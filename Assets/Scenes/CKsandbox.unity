@@ -6324,7 +6324,7 @@ PrefabInstance:
     - target: {fileID: 1765213714294488601, guid: 4758c6602764ac9478a34245274f0e6a, type: 3}
       propertyPath: playerCharacters.Array.data[1]
       value: 
-      objectReference: {fileID: 6510565176389205922, guid: 1844e321727cdf741b36c495e678ef70, type: 3}
+      objectReference: {fileID: 6510565176389205922, guid: e7b0b6ea616d4994dbf4c1e5d051fe86, type: 3}
     - target: {fileID: 1765213714294488602, guid: 4758c6602764ac9478a34245274f0e6a, type: 3}
       propertyPath: mc
       value: 
