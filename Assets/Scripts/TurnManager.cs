@@ -21,6 +21,8 @@ public class TurnManager : MonoBehaviour
     bool playerHasInputted;
     bool playerInputLock;
 
+    public bool enemyMoved;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -108,6 +110,7 @@ public class TurnManager : MonoBehaviour
             yield return new WaitForSeconds(delayTime);
         }
 
+        enemyMoved = false;
         //***enemy turn code goes here***
         Debug.Log("Executing Enemy Turn!");
         gm.enemyCharacters[enemyIndex].GetComponent<EnemyMovement>().CallEnemyMovement();
@@ -117,7 +120,7 @@ public class TurnManager : MonoBehaviour
 
         //***enemy turn code goes above here***
         //waits certain amount of time before updating next turn
-        yield return new WaitForSeconds(delayTime);
+        yield return new WaitUntil(() => enemyMoved);
         //sets enemy index to next in line
         if (enemyIndex == gm.enemyCharacters.Count() - 1)
         {

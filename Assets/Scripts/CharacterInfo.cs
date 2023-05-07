@@ -81,4 +81,5 @@ public class CharacterInfo : MonoBehaviour
             item.HideTile();
         }
     }
+
 }

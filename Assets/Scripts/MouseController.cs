@@ -69,9 +69,9 @@ public class MouseController : MonoBehaviour
                 if (tm.GetPlayerTurn() && character.inRangeTiles.Contains(tile) && !tm.GetPlayerInputLock() && !gm.TileOccupiedByPlayerCharacter(tile))
                 {
                     Debug.Log("Updating Turn...");
-                    tm.SendPlayerInput();
                     tile.GetComponent<OverlayTile>().ShowTile();
-                    character.isMoving = true; 
+                    character.isMoving = true;
+                    StartCoroutine(SendPlayerMovement());
                 }
             }
         }
@@ -85,6 +85,11 @@ public class MouseController : MonoBehaviour
 
     }
 
+    IEnumerator SendPlayerMovement()
+    {
+        yield return new WaitUntil(() => !character.isMoving);
+        tm.SendPlayerInput();
+    }
     //Position cursor where the mouse is.
     public RaycastHit2D? GetFocusedOnTile()
     {

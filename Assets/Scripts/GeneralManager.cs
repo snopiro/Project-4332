@@ -34,7 +34,15 @@ public class GeneralManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(playerCharacters.Count() == 0)
+        {
+            EndGameDefeat();
+        }
+
+        if(enemyCharacters.Count() == 0)
+        {
+            EndGameVictory();
+        }
     }
 
     public void AddCharacterToPlayerList(GameObject character)
@@ -61,5 +69,15 @@ public class GeneralManager : MonoBehaviour
         return false;
     }
 
-    
+    //functionality for player victory
+    void EndGameVictory()
+    {
+
+    }
+
+    //functionality for player defeat
+    void EndGameDefeat()
+    {
+
+    }
 }
