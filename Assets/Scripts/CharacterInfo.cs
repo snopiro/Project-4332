@@ -10,17 +10,43 @@ public class CharacterInfo : MonoBehaviour
     public OverlayTile activeTile;
     private RangeFinder rangeFinder;
     public List<OverlayTile> inRangeTiles = new List<OverlayTile>();
-    public bool playerControlled;
     public bool isActivelyControlled;
+    public TurnManager tm;
+    public bool isAttacking = false;
+
+    [SerializeField] private float maxHealth;
+    private float currentHealth;
+    [SerializeField] private Healthbar healthbar;
+
+    public GameObject movingAudio;
+
+    public int attackStat;
+    public int range;
+    public int attackRange;
 
     private void Start()
     {
         isActivelyControlled = false;
         speed = 3.0f;
+
+        currentHealth = maxHealth;
+        healthbar.UpdateHealthBar(maxHealth, currentHealth);
     }
     private void Awake()
     {
+        tm = GameObject.Find("GameManager").GetComponent<TurnManager>();
         rangeFinder = new RangeFinder();
+    }
+
+    private void Update()
+    {
+        if (movingAudio)
+        {
+            if (isMoving)
+                movingAudio.SetActive(true);
+            else
+                movingAudio.SetActive(false);
+        }
     }
 
     public void MoveAlongPath(List<OverlayTile> path)
@@ -45,10 +71,14 @@ public class CharacterInfo : MonoBehaviour
 
         if (path.Count == 0)
         {
-            GetInRangeTiles();
+            HideInRangeTiles();
+            tm.SendPlayerInput();
+            tm.SendPlayerMovement();
 
             //Set to false, otherwise would only work for one movement.
             isMoving = false;
+            currentHealth -= 1;
+            healthbar.UpdateHealthBar(maxHealth, currentHealth);
         }
     }
 
@@ -60,23 +90,41 @@ public class CharacterInfo : MonoBehaviour
     }
     public void GetInRangeTiles()
     {
-        if (playerControlled)
+        if (isAttacking)
         {
-            foreach (var item in inRangeTiles)
-            {
-                item.HideTile();
-            }
+            inRangeTiles = rangeFinder.GetTilesInRange(activeTile, attackRange);
         }
-
-        //3 represents the movement range of the character.
-        inRangeTiles = rangeFinder.GetTilesInRange(activeTile, 4);
-
-        if (playerControlled)
+        else
         {
-            foreach (var item in inRangeTiles)
-            {
-                item.ShowTile();
-            }
+            inRangeTiles = rangeFinder.GetTilesInRange(activeTile, range);
         }
     }
+
+    public void ShowInRangeTiles(Color c)
+    {
+        foreach (var item in inRangeTiles)
+        {
+            item.ShowTile(c);
+        }
+    }
+
+    public void HideInRangeTiles()
+    {
+        foreach (var item in inRangeTiles)
+        {
+            item.HideTile();
+        }
+
+        if (isAttacking)
+        {
+            GetInRangeTiles();
+        }
+    }
+
+    public void receiveDamage(int damage)
+    {
+        currentHealth -= damage;
+        healthbar.UpdateHealthBar(maxHealth, currentHealth);
+    }
+
 }

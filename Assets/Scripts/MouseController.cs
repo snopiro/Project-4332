@@ -13,11 +13,14 @@ public class MouseController : MonoBehaviour
     private PathFinder pathFinder;
     private ArrowTranslator arrowTranslator;
     private List<OverlayTile> path = new List<OverlayTile>();
+    public GeneralManager gm;
+    public TurnManager tm;
 
     private void Start()
     {
         pathFinder = new PathFinder();
         arrowTranslator = new ArrowTranslator();
+        
     }
 
     // Update is called once per frame
@@ -38,34 +41,56 @@ public class MouseController : MonoBehaviour
 
             if (character != null && character.inRangeTiles.Contains(tile) && !character.isMoving)
             {
-                path = pathFinder.FindPath(character.activeTile, tile, character.inRangeTiles);
-
-                foreach (var item in character.inRangeTiles)
+                if (!tm.GetPlayerInputLock() && !character.isAttacking)
                 {
-                    mapManager.Instance.map[item.gridLocation2D].SetArrowSprite(ArrowDirection.None);
-                }
+                    if (character != null && character.inRangeTiles.Contains(tile) && !character.isMoving)
+                    {
+                        path = pathFinder.FindPath(character.activeTile, tile, character.inRangeTiles);
 
-                for (int i = 0; i < path.Count; i++)
-                {
-                    var previousTile = i > 0 ? path[i - 1] : character.activeTile;
-                    var futureTile = i < path.Count - 1 ? path[i + 1] : null;
+                        foreach (var item in character.inRangeTiles)
+                        {
+                            mapManager.Instance.map[item.gridLocation2D].SetArrowSprite(ArrowDirection.None);
+                        }
 
-                    var arrowDirection = arrowTranslator.TranslateDirection(previousTile, path[i], futureTile);
-                    path[i].SetArrowSprite(arrowDirection);
+                        for (int i = 0; i < path.Count; i++)
+                        {
+                            var previousTile = i > 0 ? path[i - 1] : character.activeTile;
+                            var futureTile = i < path.Count - 1 ? path[i + 1] : null;
+
+                            var arrowDirection = arrowTranslator.TranslateDirection(previousTile, path[i], futureTile);
+                            path[i].SetArrowSprite(arrowDirection);
+                        }
+                    }
                 }
             }
 
-            if (Input.GetMouseButtonDown(0))
+
+            if (Input.GetMouseButtonDown(0) && !character.isAttacking)
             {
                 Debug.Log("Current Tile: " + tile.gridLocation);
                 Debug.Log("Character: " + character);
-                if (character.inRangeTiles.Contains(tile))
+                if (tm.GetPlayerTurn() && character.inRangeTiles.Contains(tile) && !tm.GetPlayerInputLock() && !gm.TileOccupiedByPlayerCharacter(tile))
                 {
-                    tile.GetComponent<OverlayTile>().ShowTile();
+                    Debug.Log("Updating Turn...");
+                    tile.GetComponent<OverlayTile>().ShowTile(Color.white);
                     character.isMoving = true;
+                    StartCoroutine(SendPlayerMovement());
                 }
             }
+            else if (Input.GetMouseButtonDown(0) && character.isAttacking) //attacking function
+            {
+                if (tm.GetPlayerTurn() && character.inRangeTiles.Contains(tile) && !tm.GetPlayerInputLock() && !gm.TileOccupiedByPlayerCharacter(tile))
+                {
+                    gm.EnemyUnitOnTile(tile).receiveDamage(character.attackStat);
+                }
+
+            }
+            else if (Input.GetMouseButtonDown(1) && tm.turn == TurnManager.Turn.Player)
+            {
+                tm.SendPlayerAttack(); //skip turn on right click
+            }
         }
+    
 
         //Allow the character to move along the map.
         if (path.Count > 0 && character.isMoving)
@@ -76,6 +101,11 @@ public class MouseController : MonoBehaviour
 
     }
 
+    IEnumerator SendPlayerMovement()
+    {
+        yield return new WaitUntil(() => !character.isMoving);
+        tm.SendPlayerInput();
+    }
     //Position cursor where the mouse is.
     public RaycastHit2D? GetFocusedOnTile()
     {
@@ -102,5 +132,10 @@ public class MouseController : MonoBehaviour
         Debug.Log("Setting character to " + chara);
         character = chara;
         character.isActivelyControlled = true;
+    }
+
+    public CharacterInfo GetControlledCharacter()
+    {
+        return character;
     }
 }
