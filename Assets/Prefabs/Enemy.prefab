@@ -131,7 +131,7 @@ MonoBehaviour:
   tm: {fileID: 0}
   isAttacking: 0
   maxHealth: 5
-  healthbar: {fileID: 0}
+  healthbar: {fileID: 1492333086732070530}
   attackStat: 0
   range: 4
   attackRange: 0

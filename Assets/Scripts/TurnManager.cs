@@ -21,6 +21,7 @@ public class TurnManager : MonoBehaviour
     bool playerHasInputted;
     bool playerHasAttacked;
     bool playerInputLock;
+    bool playerHasMoved;
 
     public bool enemyMoved;
 

@@ -59,7 +59,7 @@ public class GeneralManager : MonoBehaviour
     //i.e. if there's a player on said tile
     public bool TileOccupiedByPlayerCharacter(OverlayTile tile)
     {
-        foreach(var item in playerCharacters)
+        foreach(var item in playerCharacters) { 
             if(item.GetComponent<CharacterInfo>().activeTile == tile)
             {
                 return true;
@@ -73,6 +73,7 @@ public class GeneralManager : MonoBehaviour
         {
             if (item.GetComponent<CharacterInfo>().activeTile == tile)
             {
+                Debug.Log("Returning enemy: " + item);
                 return item.GetComponent<CharacterInfo>();
             }
         }

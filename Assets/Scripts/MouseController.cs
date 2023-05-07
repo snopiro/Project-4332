@@ -14,6 +14,7 @@ public class MouseController : MonoBehaviour
     private ArrowTranslator arrowTranslator;
     private List<OverlayTile> path = new List<OverlayTile>();
     public GeneralManager gm;
+    public TurnManager tm;
 
     private void Start()
     {
@@ -39,26 +40,26 @@ public class MouseController : MonoBehaviour
             gameObject.GetComponent<SpriteRenderer>().sortingOrder = tile.GetComponent<SpriteRenderer>().sortingOrder;
 
             if (character != null && character.inRangeTiles.Contains(tile) && !character.isMoving)
-            if (!tm.GetPlayerInputLock() && !character.isAttacking)
             {
-                if (character != null && character.inRangeTiles.Contains(tile) && !character.isMoving)
+                if (!tm.GetPlayerInputLock() && !character.isAttacking)
                 {
-                    mapManager.Instance.map[item.gridLocation2D].SetArrowSprite(ArrowDirection.None);
-                }
-                    path = pathFinder.FindPath(character.activeTile, tile, character.inRangeTiles);
-
-                    foreach (var item in character.inRangeTiles)
+                    if (character != null && character.inRangeTiles.Contains(tile) && !character.isMoving)
                     {
-                        mapManager.Instance.map[item.gridLocation2D].SetArrowSprite(ArrowDirection.None);
-                    }
+                        path = pathFinder.FindPath(character.activeTile, tile, character.inRangeTiles);
 
-                    for (int i = 0; i < path.Count; i++)
-                    {
-                        var previousTile = i > 0 ? path[i - 1] : character.activeTile;
-                        var futureTile = i < path.Count - 1 ? path[i + 1] : null;
+                        foreach (var item in character.inRangeTiles)
+                        {
+                            mapManager.Instance.map[item.gridLocation2D].SetArrowSprite(ArrowDirection.None);
+                        }
 
-                        var arrowDirection = arrowTranslator.TranslateDirection(previousTile, path[i], futureTile);
-                        path[i].SetArrowSprite(arrowDirection);
+                        for (int i = 0; i < path.Count; i++)
+                        {
+                            var previousTile = i > 0 ? path[i - 1] : character.activeTile;
+                            var futureTile = i < path.Count - 1 ? path[i + 1] : null;
+
+                            var arrowDirection = arrowTranslator.TranslateDirection(previousTile, path[i], futureTile);
+                            path[i].SetArrowSprite(arrowDirection);
+                        }
                     }
                 }
             }
@@ -75,18 +76,21 @@ public class MouseController : MonoBehaviour
                     character.isMoving = true;
                     StartCoroutine(SendPlayerMovement());
                 }
-            }else if(Input.GetMouseButtonDown(0) && character.isAttacking) //attacking function
+            }
+            else if (Input.GetMouseButtonDown(0) && character.isAttacking) //attacking function
             {
                 if (tm.GetPlayerTurn() && character.inRangeTiles.Contains(tile) && !tm.GetPlayerInputLock() && !gm.TileOccupiedByPlayerCharacter(tile))
                 {
                     gm.EnemyUnitOnTile(tile).receiveDamage(character.attackStat);
                 }
 
-            }else if (Input.GetMouseButtonDown(1) && tm.turn == TurnManager.Turn.Player)
+            }
+            else if (Input.GetMouseButtonDown(1) && tm.turn == TurnManager.Turn.Player)
             {
                 tm.SendPlayerAttack(); //skip turn on right click
             }
         }
+    
 
         //Allow the character to move along the map.
         if (path.Count > 0 && character.isMoving)
