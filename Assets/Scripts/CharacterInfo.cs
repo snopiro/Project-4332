@@ -11,7 +11,8 @@ public class CharacterInfo : MonoBehaviour
     private RangeFinder rangeFinder;
     public List<OverlayTile> inRangeTiles = new List<OverlayTile>();
     public bool isActivelyControlled;
-    
+
+    public GameObject audio;    
 
     public int range;
 
@@ -23,6 +24,18 @@ public class CharacterInfo : MonoBehaviour
     private void Awake()
     {
         rangeFinder = new RangeFinder();
+    }
+
+    private void Update()
+    {
+        //executes commands in unity editor when character is moving
+        if (audio)
+        {
+            if (isMoving)
+                audio.SetActive(true);
+            else
+                audio.SetActive(false);
+        }
     }
 
     public void MoveAlongPath(List<OverlayTile> path)
