@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CharacterInfo : MonoBehaviour
@@ -12,10 +13,13 @@ public class CharacterInfo : MonoBehaviour
     public List<OverlayTile> inRangeTiles = new List<OverlayTile>();
     public bool playerControlled;
     public bool isActivelyControlled;
+    public bool isAttacking = false;
 
-    [SerializeField] private float maxHealth = 3;
+    [SerializeField] private float maxHealth;
     private float currentHealth;
     [SerializeField] private Healthbar healthbar;
+
+    public int attackStat;
 
     private void Start()
     {
@@ -52,6 +56,7 @@ public class CharacterInfo : MonoBehaviour
 
         if (path.Count == 0)
         {
+            isAttacking = true;
             GetInRangeTiles();
 
             //Set to false, otherwise would only work for one movement.
@@ -78,15 +83,50 @@ public class CharacterInfo : MonoBehaviour
             }
         }
 
-        //3 represents the movement range of the character.
+        //4 represents the movement range of the character.
         inRangeTiles = rangeFinder.GetTilesInRange(activeTile, 4);
 
-        if (playerControlled)
+        if (playerControlled && isAttacking)
+        {
+            inRangeTiles = rangeFinder.GetTilesInRange(activeTile, 1);
+
+            foreach (var item in inRangeTiles)
+            {
+                item.ShowTile(Color.red);
+            }
+            if(Input.GetMouseButtonDown(1)) 
+            {
+                isAttacking = false;
+            }
+        }else if(playerControlled)
         {
             foreach (var item in inRangeTiles)
+            {
+                item.ShowTile(Color.white);
+            }
+
+        }
+    }
+/*
+    public void GetInRangeTiles2(CharacterInfo ci)
+    {
+        if (ci.playerControlled)
+        {
+            foreach (var item in inRangeTiles)
+            {
+                item.HideTile();
+            }
+        }
+
+        //3 represents the movement range of the character.
+        ci.inRangeTiles = rangeFinder.GetTilesInRange(activeTile, 4);
+
+        if (ci.playerControlled)
+        {
+            foreach (var item in ci.inRangeTiles)
             {
                 item.ShowTile();
             }
         }
-    }
+    }*/
 }

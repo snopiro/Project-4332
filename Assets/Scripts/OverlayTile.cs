@@ -5,6 +5,9 @@ using static ArrowTranslator;
 
 public class OverlayTile : MonoBehaviour
 {
+    public SpriteRenderer sr; // Needed to assign material color
+
+
     //A* pathfinding variables.
     public int G;
     public int H;
@@ -18,10 +21,10 @@ public class OverlayTile : MonoBehaviour
     public Vector2Int gridLocation2D { get { return new Vector2Int(gridLocation.x, gridLocation.y); } }
 
     public List<Sprite> arrows;
-public void ShowTile()
+public void ShowTile(Color c)
     {
         //Make visible once rendered.
-        gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+        gameObject.GetComponent<SpriteRenderer>().color = c;
     }
 
     public void HideTile()

@@ -284,6 +284,7 @@ MonoBehaviour:
   isActivelyControlled: 0
   maxHealth: 10
   healthbar: {fileID: 2487035625416188315}
+  attackStat: 1
 --- !u!210 &1305658116018149059
 SortingGroup:
   m_ObjectHideFlags: 0

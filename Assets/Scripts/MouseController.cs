@@ -61,7 +61,7 @@ public class MouseController : MonoBehaviour
                 Debug.Log("Character: " + character);
                 if (character.inRangeTiles.Contains(tile))
                 {
-                    tile.GetComponent<OverlayTile>().ShowTile();
+                    tile.GetComponent<OverlayTile>().ShowTile(Color.white);
                     character.isMoving = true;
                 }
             }
