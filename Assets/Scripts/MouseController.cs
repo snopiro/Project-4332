@@ -36,11 +36,7 @@ public class MouseController : MonoBehaviour
             //Position mouse where the tile is focused on.
             gameObject.GetComponent<SpriteRenderer>().sortingOrder = tile.GetComponent<SpriteRenderer>().sortingOrder;
 
-<<<<<<< Updated upstream
             if (character != null && character.inRangeTiles.Contains(tile) && !character.isMoving)
-=======
-            if (!tm.GetPlayerInputLock() && !character.isAttacking)
->>>>>>> Stashed changes
             {
                 path = pathFinder.FindPath(character.activeTile, tile, character.inRangeTiles);
 
@@ -65,16 +61,8 @@ public class MouseController : MonoBehaviour
                 Debug.Log("Character: " + character);
                 if (character.inRangeTiles.Contains(tile))
                 {
-<<<<<<< Updated upstream
                     tile.GetComponent<OverlayTile>().ShowTile(Color.white);
                     character.isMoving = true;
-=======
-                    Debug.Log("Updating Turn...");
-                    tm.SendPlayerInput();
-                    tile.GetComponent<OverlayTile>().ShowTile(Color.white);
-                    character.isMoving = true;
-                    StartCoroutine(SendPlayerMovement());
->>>>>>> Stashed changes
                 }
             }
         }
@@ -86,12 +74,6 @@ public class MouseController : MonoBehaviour
         }
 
 
-    }
-
-    IEnumerator SendPlayerMovement()
-    {
-        yield return new WaitUntil(() => !character.isMoving);
-        tm.SendPlayerMovement();
     }
 
     //Position cursor where the mouse is.
