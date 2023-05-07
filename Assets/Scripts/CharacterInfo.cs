@@ -18,6 +18,8 @@ public class CharacterInfo : MonoBehaviour
     private float currentHealth;
     [SerializeField] private Healthbar healthbar;
 
+    public GameObject movingAudio;
+
     public int attackStat;
     public int range;
     public int attackRange;
@@ -34,6 +36,17 @@ public class CharacterInfo : MonoBehaviour
     {
         tm = GameObject.Find("GameManager").GetComponent<TurnManager>();
         rangeFinder = new RangeFinder();
+    }
+
+    private void Update()
+    {
+        if (movingAudio)
+        {
+            if (isMoving)
+                movingAudio.SetActive(true);
+            else
+                movingAudio.SetActive(false);
+        }
     }
 
     public void MoveAlongPath(List<OverlayTile> path)
