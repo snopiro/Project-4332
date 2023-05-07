@@ -13,8 +13,8 @@ public class MouseController : MonoBehaviour
     private PathFinder pathFinder;
     private ArrowTranslator arrowTranslator;
     private List<OverlayTile> path = new List<OverlayTile>();
-    public TurnManager tm;
     public GeneralManager gm;
+    public TurnManager tm;
 
     private void Start()
     {
@@ -39,42 +39,58 @@ public class MouseController : MonoBehaviour
             //Position mouse where the tile is focused on.
             gameObject.GetComponent<SpriteRenderer>().sortingOrder = tile.GetComponent<SpriteRenderer>().sortingOrder;
 
-            if (!tm.GetPlayerInputLock())
+            if (character != null && character.inRangeTiles.Contains(tile) && !character.isMoving)
             {
-                if (character != null && character.inRangeTiles.Contains(tile) && !character.isMoving)
+                if (!tm.GetPlayerInputLock() && !character.isAttacking)
                 {
-                    path = pathFinder.FindPath(character.activeTile, tile, character.inRangeTiles);
-
-                    foreach (var item in character.inRangeTiles)
+                    if (character != null && character.inRangeTiles.Contains(tile) && !character.isMoving)
                     {
-                        mapManager.Instance.map[item.gridLocation2D].SetArrowSprite(ArrowDirection.None);
-                    }
+                        path = pathFinder.FindPath(character.activeTile, tile, character.inRangeTiles);
 
-                    for (int i = 0; i < path.Count; i++)
-                    {
-                        var previousTile = i > 0 ? path[i - 1] : character.activeTile;
-                        var futureTile = i < path.Count - 1 ? path[i + 1] : null;
+                        foreach (var item in character.inRangeTiles)
+                        {
+                            mapManager.Instance.map[item.gridLocation2D].SetArrowSprite(ArrowDirection.None);
+                        }
 
-                        var arrowDirection = arrowTranslator.TranslateDirection(previousTile, path[i], futureTile);
-                        path[i].SetArrowSprite(arrowDirection);
+                        for (int i = 0; i < path.Count; i++)
+                        {
+                            var previousTile = i > 0 ? path[i - 1] : character.activeTile;
+                            var futureTile = i < path.Count - 1 ? path[i + 1] : null;
+
+                            var arrowDirection = arrowTranslator.TranslateDirection(previousTile, path[i], futureTile);
+                            path[i].SetArrowSprite(arrowDirection);
+                        }
                     }
                 }
             }
 
 
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && !character.isAttacking)
             {
                 Debug.Log("Current Tile: " + tile.gridLocation);
                 Debug.Log("Character: " + character);
                 if (tm.GetPlayerTurn() && character.inRangeTiles.Contains(tile) && !tm.GetPlayerInputLock() && !gm.TileOccupiedByPlayerCharacter(tile))
                 {
                     Debug.Log("Updating Turn...");
-                    tile.GetComponent<OverlayTile>().ShowTile();
+                    tile.GetComponent<OverlayTile>().ShowTile(Color.white);
                     character.isMoving = true;
                     StartCoroutine(SendPlayerMovement());
                 }
             }
+            else if (Input.GetMouseButtonDown(0) && character.isAttacking) //attacking function
+            {
+                if (tm.GetPlayerTurn() && character.inRangeTiles.Contains(tile) && !tm.GetPlayerInputLock() && !gm.TileOccupiedByPlayerCharacter(tile))
+                {
+                    gm.EnemyUnitOnTile(tile).receiveDamage(character.attackStat);
+                }
+
+            }
+            else if (Input.GetMouseButtonDown(1) && tm.turn == TurnManager.Turn.Player)
+            {
+                tm.SendPlayerAttack(); //skip turn on right click
+            }
         }
+    
 
         //Allow the character to move along the map.
         if (path.Count > 0 && character.isMoving)

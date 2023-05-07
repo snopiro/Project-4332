@@ -19,7 +19,9 @@ public class TurnManager : MonoBehaviour
     public float delayTime = 1.0f;
     bool shouldUpdateTurn;
     bool playerHasInputted;
+    bool playerHasAttacked;
     bool playerInputLock;
+    bool playerHasMoved;
 
     public bool enemyMoved;
 
@@ -32,7 +34,6 @@ public class TurnManager : MonoBehaviour
         enemyIndex = 0;
         shouldUpdateTurn = false;
     }
-
     private void Start()
     {
         StartCoroutine(LateStart());
@@ -72,21 +73,35 @@ public class TurnManager : MonoBehaviour
     {
         Debug.Log("Executing Player turn!");
         playerHasInputted = false;
+        playerHasMoved = false;
+        playerHasAttacked = false;
         playerInputLock = false;
         //***player turn code goes here***
         mc.SetControlledCharacter(gm.playerCharacters[playerIndex].GetComponent<CharacterInfo>());
-        mc.GetControlledCharacter().ShowInRangeTiles();
+        mc.GetControlledCharacter().GetInRangeTiles();
+        mc.GetControlledCharacter().ShowInRangeTiles(Color.white);
 
-        Debug.Log("Waiting for player input...");
         yield return new WaitUntil(() => playerHasInputted);
         Debug.Log("Received player input!!!");
-        playerInputLock = true;
+
         mc.GetControlledCharacter().HideInRangeTiles();
 
+        Debug.Log("Waiting for player to finish moving...");
+        yield return new WaitUntil(() => playerHasMoved);
+        mc.GetControlledCharacter().isAttacking = true;
+        Debug.Log("Showing player attack tiles...");
+        mc.GetControlledCharacter().GetInRangeTiles();
+        mc.GetControlledCharacter().ShowInRangeTiles(Color.red);
+        Debug.Log("Waiting for player to attack");
+        yield return new WaitUntil(() => playerHasAttacked);
 
+        mc.GetControlledCharacter().isAttacking = false;
+        playerInputLock = true;
+        mc.GetControlledCharacter().HideInRangeTiles();
         //*** player turn code goes above here***
         //waits certain amount of time before updating next turn
-        yield return new WaitForSeconds(delayTime);
+
+        //yield return new WaitForSeconds(delayTime);
         //sets player index to next in line
         if (playerIndex == gm.playerCharacters.Count() - 1)
         {
@@ -100,6 +115,7 @@ public class TurnManager : MonoBehaviour
         }
         Debug.Log("Setting player index to: " + playerIndex);
 
+        //waits certain amount of time before updating next turn
         shouldUpdateTurn = true;
     }
 
@@ -139,9 +155,19 @@ public class TurnManager : MonoBehaviour
 
     public void SendPlayerInput()
     {
+        //player has input where to move
         playerHasInputted = true;
     }
+    public void SendPlayerMovement()
+    {
+        //"player has moved"
+        playerHasMoved = true;
+    }
 
+    public void SendPlayerAttack()
+    {
+        playerHasAttacked = true;
+    }
     public bool GetPlayerTurn()
     {
         if (turn == Turn.Player)
