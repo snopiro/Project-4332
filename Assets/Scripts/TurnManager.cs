@@ -12,6 +12,13 @@ public class TurnManager : MonoBehaviour
 
     public float delayTime = 1.0f;
     bool shouldUpdateTurn;
+<<<<<<< Updated upstream
+=======
+    bool playerHasInputted;
+    bool playerHasMoved;
+    bool playerHasAttacked;
+    bool playerInputLock;
+>>>>>>> Stashed changes
 
     // Start is called before the first frame update
     void Start()
@@ -39,9 +46,44 @@ public class TurnManager : MonoBehaviour
     }
 
     //Coroutines for player and enemy turn
+<<<<<<< Updated upstream
     private IEnumerator PlayerTurn()
     {
         //***player turn code goes here***
+=======
+    //playerInputLock prevents the player from making inputs outside of their turn.
+    //playerHasMoved gets set to true in MouseController.cs after player selects a square to move to
+    private IEnumerator PlayerTurn()
+    {
+        Debug.Log("Executing Player turn!");
+        playerHasInputted = false;
+        playerHasMoved = false;
+        playerHasAttacked = false;
+        playerInputLock = false;
+        //***player turn code goes here***
+        mc.SetControlledCharacter(gm.playerCharacters[playerIndex].GetComponent<CharacterInfo>());
+        mc.GetControlledCharacter().ShowInRangeTiles(Color.white);
+
+        Debug.Log("Waiting for player input...");
+        yield return new WaitUntil(() => playerHasInputted);
+        Debug.Log("Received player input!!!");
+        mc.GetControlledCharacter().HideInRangeTiles();
+        //--- above this is working as intended ---//
+
+        Debug.Log("Waiting for player to finish moving...");
+        yield return new WaitUntil(() => playerHasMoved);
+        Debug.Log("Player is done moving.");
+        mc.GetControlledCharacter().HideInRangeTiles();
+
+        Debug.Log("Showing player tiles...");
+        mc.GetControlledCharacter().GetInRangeTiles();
+        mc.GetControlledCharacter().ShowInRangeTiles(Color.red);
+        Debug.Log("Waiting for player to attack");
+        yield return new WaitUntil(() => playerHasAttacked);
+
+        playerInputLock = true;
+        mc.GetControlledCharacter().HideInRangeTiles();
+>>>>>>> Stashed changes
 
 
 
@@ -71,4 +113,42 @@ public class TurnManager : MonoBehaviour
         shouldUpdateTurn = true;
     }
 
+<<<<<<< Updated upstream
+=======
+
+    public void SendPlayerInput()
+    {
+        //player has input where to move
+        playerHasInputted = true;
+    }
+
+    public void SendPlayerMovement()
+    {
+        //"player has moved"
+        playerHasMoved = true;
+    }
+
+    public void SendPlayerAttack()
+    {
+        playerHasAttacked = true;
+    }
+    public bool GetPlayerTurn()
+    {
+        if (turn == Turn.Player)
+        {
+            //Debug.Log("returning player turn as true...");
+            return true;
+        }
+        else 
+        {
+            //Debug.Log("returning player turn as false...");
+            return false;
+        }
+    }
+
+    public bool GetPlayerInputLock()
+    {
+        return playerInputLock;
+    }
+>>>>>>> Stashed changes
 }

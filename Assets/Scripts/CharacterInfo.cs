@@ -9,17 +9,24 @@ public class CharacterInfo : MonoBehaviour
     public float speed;
     public bool isMoving = false;
     public OverlayTile activeTile;
-    private RangeFinder rangeFinder;
+    private RangeFinder rangeFinder;    
+    public TurnManager tm;
+
     public List<OverlayTile> inRangeTiles = new List<OverlayTile>();
     public bool playerControlled;
     public bool isActivelyControlled;
     public bool isAttacking = false;
 
+<<<<<<< Updated upstream
     [SerializeField] private float maxHealth;
     private float currentHealth;
     [SerializeField] private Healthbar healthbar;
 
     public int attackStat;
+=======
+    public int range;
+    public int attackRange;
+>>>>>>> Stashed changes
 
     private void Start()
     {
@@ -31,6 +38,7 @@ public class CharacterInfo : MonoBehaviour
     }
     private void Awake()
     {
+        tm = GameObject.Find("GameManager").GetComponent<TurnManager>();
         rangeFinder = new RangeFinder();
     }
 
@@ -58,11 +66,14 @@ public class CharacterInfo : MonoBehaviour
         {
             isAttacking = true;
             GetInRangeTiles();
-
             //Set to false, otherwise would only work for one movement.
             isMoving = false;
+<<<<<<< Updated upstream
             currentHealth -= 1;
             healthbar.UpdateHealthBar(maxHealth, currentHealth);
+=======
+            isAttacking = true;
+>>>>>>> Stashed changes
         }
 
     }
@@ -119,6 +130,7 @@ public class CharacterInfo : MonoBehaviour
         }
 
         //3 represents the movement range of the character.
+<<<<<<< Updated upstream
         ci.inRangeTiles = rangeFinder.GetTilesInRange(activeTile, 4);
 
         if (ci.playerControlled)
@@ -129,4 +141,35 @@ public class CharacterInfo : MonoBehaviour
             }
         }
     }*/
+=======
+        if (isAttacking)
+        {
+            inRangeTiles = rangeFinder.GetTilesInRange(activeTile, attackRange);
+        }
+        else
+        {
+            inRangeTiles = rangeFinder.GetTilesInRange(activeTile, range);
+        }
+    }
+
+    public void ShowInRangeTiles(Color c)
+    {
+        foreach (var item in inRangeTiles)
+        {
+            item.ShowTile(c);
+        }
+    }
+
+    public void HideInRangeTiles()
+    {
+        foreach (var item in inRangeTiles)
+        {
+            item.HideTile();
+        }
+        if(isAttacking)
+        {
+            GetInRangeTiles();
+        }
+    }
+>>>>>>> Stashed changes
 }

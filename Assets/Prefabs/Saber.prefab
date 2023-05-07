@@ -279,12 +279,19 @@ MonoBehaviour:
   speed: 0
   isMoving: 0
   activeTile: {fileID: 4692055318840391886, guid: c7651e92909531a4ab4e910a0c08669a, type: 3}
+  tm: {fileID: 0}
   inRangeTiles: []
   playerControlled: 1
   isActivelyControlled: 0
+<<<<<<< Updated upstream
   maxHealth: 10
   healthbar: {fileID: 2487035625416188315}
   attackStat: 1
+=======
+  isAttacking: 0
+  range: 4
+  attackRange: 1
+>>>>>>> Stashed changes
 --- !u!210 &1305658116018149059
 SortingGroup:
   m_ObjectHideFlags: 0

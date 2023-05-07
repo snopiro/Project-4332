@@ -43,4 +43,33 @@ public class GeneralManager : MonoBehaviour
     {
         enemyCharacters.Add(character);
     }
+<<<<<<< Updated upstream
+=======
+
+    //returns true if there is a player character whose activeTile is asked tile
+    //i.e. if there's a player on said tile
+    public bool TileOccupiedByPlayerCharacter(OverlayTile tile)
+    {
+        foreach(var item in playerCharacters)
+        {
+            if(item.GetComponent<CharacterInfo>().activeTile == tile)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public CharacterInfo UnitOnTile(OverlayTile tile)
+    {
+        foreach (var item in enemyCharacters) {
+            if(item.GetComponent<CharacterInfo>().activeTile == tile)
+            {
+                return item.GetComponent<CharacterInfo>();
+            }
+        }
+        return null;
+    }
+    
+>>>>>>> Stashed changes
 }
