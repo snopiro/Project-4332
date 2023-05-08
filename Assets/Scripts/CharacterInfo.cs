@@ -10,6 +10,7 @@ public class CharacterInfo : MonoBehaviour
     public OverlayTile activeTile;
     private RangeFinder rangeFinder;
     public List<OverlayTile> inRangeTiles = new List<OverlayTile>();
+    public bool playerControlled;
     public bool isActivelyControlled;
     public TurnManager tm;
     public bool isAttacking = false;
@@ -80,6 +81,7 @@ public class CharacterInfo : MonoBehaviour
             currentHealth -= 1;
             healthbar.UpdateHealthBar(maxHealth, currentHealth);
         }
+
     }
 
     public void PositionCharacterOnTile(OverlayTile tile)
@@ -102,24 +104,24 @@ public class CharacterInfo : MonoBehaviour
 
     public void ShowInRangeTiles(Color c)
     {
-        foreach (var item in inRangeTiles)
-        {
+            foreach (var item in inRangeTiles)
+            {
             item.ShowTile(c);
+            }
         }
-    }
 
     public void HideInRangeTiles()
-    {
-        foreach (var item in inRangeTiles)
         {
+            foreach (var item in inRangeTiles)
+            {
             item.HideTile();
         }
 
         if (isAttacking)
         {
             GetInRangeTiles();
+            }
         }
-    }
 
     public void receiveDamage(int damage)
     {

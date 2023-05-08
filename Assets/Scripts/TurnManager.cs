@@ -107,7 +107,7 @@ public class TurnManager : MonoBehaviour
         {
             playerIndex = 0;
             Debug.Log("Changing to enemy turn...");
-            turn = Turn.Enemy;
+        turn = Turn.Enemy;
         }
         else
         {
@@ -115,7 +115,9 @@ public class TurnManager : MonoBehaviour
         }
         Debug.Log("Setting player index to: " + playerIndex);
 
+        //)
         //waits certain amount of time before updating next turn
+        yield return new WaitForSeconds(delayTime);
         shouldUpdateTurn = true;
     }
 
@@ -131,7 +133,7 @@ public class TurnManager : MonoBehaviour
         Debug.Log("Executing Enemy Turn!");
         gm.enemyCharacters[enemyIndex].GetComponent<EnemyMovement>().CallEnemyMovement();
 
-        
+
 
 
         //***enemy turn code goes above here***
@@ -142,7 +144,7 @@ public class TurnManager : MonoBehaviour
         {
             Debug.Log("Changing to player turn...");
             enemyIndex = 0;
-            turn = Turn.Player;
+        turn = Turn.Player;
         }
         else
         {
@@ -150,6 +152,9 @@ public class TurnManager : MonoBehaviour
         }
         Debug.Log("Setting enemy index to: " + enemyIndex);
 
+        //)
+        //waits certain amount of time before updating next turn
+        yield return new WaitForSeconds(delayTime);
         shouldUpdateTurn = true;
     }
 

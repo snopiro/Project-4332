@@ -38,11 +38,11 @@ public class GeneralManager : MonoBehaviour
         {
             EndGameDefeat();
         }
-
+        
         if(enemyCharacters.Count() == 0)
         {
             EndGameVictory();
-        }
+    }
     }
 
     public void AddCharacterToPlayerList(GameObject character)

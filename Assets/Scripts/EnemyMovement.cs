@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class EnemyMovement : CharacterInfo
 {
-    
+
     private List<OverlayTile> path = new List<OverlayTile>();
     private PathFinder pathFinder;
 
@@ -29,7 +29,7 @@ public class EnemyMovement : CharacterInfo
 
     void LateUpdate()
     {
-//        Debug.Log("Enemy Path count: " + path.Count());
+        //        Debug.Log("Enemy Path count: " + path.Count());
         //Allow the character to move along the map.
         if (path.Count > 0 && base.isMoving)
         {
