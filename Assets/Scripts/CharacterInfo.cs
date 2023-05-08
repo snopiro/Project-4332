@@ -10,12 +10,13 @@ public class CharacterInfo : MonoBehaviour
     public OverlayTile activeTile;
     private RangeFinder rangeFinder;
     public List<OverlayTile> inRangeTiles = new List<OverlayTile>();
+    public bool playerControlled;
     public bool isActivelyControlled;
     public TurnManager tm;
     public bool isAttacking = false;
 
     [SerializeField] private float maxHealth;
-    private float currentHealth;
+    [SerializeField] private float currentHealth;
     [SerializeField] private Healthbar healthbar;
 
     public GameObject movingAudio;
@@ -77,9 +78,10 @@ public class CharacterInfo : MonoBehaviour
 
             //Set to false, otherwise would only work for one movement.
             isMoving = false;
-            currentHealth -= 1;
+            //currentHealth -= 1;
             healthbar.UpdateHealthBar(maxHealth, currentHealth);
         }
+
     }
 
     public void PositionCharacterOnTile(OverlayTile tile)
@@ -102,28 +104,54 @@ public class CharacterInfo : MonoBehaviour
 
     public void ShowInRangeTiles(Color c)
     {
-        foreach (var item in inRangeTiles)
-        {
+            foreach (var item in inRangeTiles)
+            {
             item.ShowTile(c);
+            }
         }
-    }
 
     public void HideInRangeTiles()
-    {
-        foreach (var item in inRangeTiles)
         {
+            foreach (var item in inRangeTiles)
+            {
             item.HideTile();
         }
 
         if (isAttacking)
         {
             GetInRangeTiles();
+            }
         }
-    }
 
     public void receiveDamage(int damage)
     {
+        GameObject.Find("HitSound").GetComponent<AudioSource>().Play();
         currentHealth -= damage;
+        healthbar.UpdateHealthBar(maxHealth, currentHealth);
+        if(currentHealth <= 0)
+        {
+            Debug.Log("Starting coroutine: death");
+            StartCoroutine(Death());
+        }
+        else        
+            tm.ProcessEnemyDeath();
+    }
+
+    IEnumerator Death()
+    {
+        yield return new WaitForSeconds(1.0f);
+        if (playerControlled)
+            GameObject.Find("GameManager").GetComponent<GeneralManager>().RemovePlayerCharacterFromList(this.gameObject);
+        
+        else
+            GameObject.Find("GameManager").GetComponent<GeneralManager>().RemoveEnemyCharacterFromList(this.gameObject);
+        gameObject.SetActive(false);
+        tm.ProcessEnemyDeath();
+    }
+
+    public void fullHeal()
+    {
+        currentHealth = maxHealth;
         healthbar.UpdateHealthBar(maxHealth, currentHealth);
     }
 

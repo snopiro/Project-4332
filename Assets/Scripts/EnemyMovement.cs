@@ -5,31 +5,31 @@ using UnityEngine;
 
 public class EnemyMovement : CharacterInfo
 {
-    
+
     private List<OverlayTile> path = new List<OverlayTile>();
     private PathFinder pathFinder;
 
     public float minMoveTime;
     public float maxMoveTime;
     OverlayTile tile;
+    private GeneralManager gm;
 
     private Vector2[] moveDirections = { Vector2.up, Vector2.down, Vector2.left, Vector2.right };
 
     void Start()
     {
+        base.fullHeal();
         tile = base.activeTile;
         pathFinder = new PathFinder();
         tm = GameObject.Find("GameManager").GetComponent<TurnManager>();
-
-        // Set initial movement direction
-        //Vector2 direction = moveDirections[Random.Range(0, moveDirections.Length)];
-        //StartCoroutine(Move(direction));
+        gm = GameObject.Find("GameManager").GetComponent<GeneralManager>();
+        
     }
 
 
     void LateUpdate()
     {
-//        Debug.Log("Enemy Path count: " + path.Count());
+        //Debug.Log("Enemy Path count: " + path.Count());
         //Allow the character to move along the map.
         if (path.Count > 0 && base.isMoving)
         {
@@ -48,7 +48,13 @@ public class EnemyMovement : CharacterInfo
 
     IEnumerator Move()
     {
-        tile = base.inRangeTiles[Random.Range(0, base.inRangeTiles.Count())];
+        while (true) 
+        {
+            tile = base.inRangeTiles[Random.Range(0, base.inRangeTiles.Count())];
+            if (!gm.TileOccupiedByEnemyCharacter(tile) && !gm.TileOccupiedByPlayerCharacter(tile))
+                break;
+            
+        }
         path = pathFinder.FindPath(base.activeTile, tile, base.inRangeTiles);
         Debug.Log("Setting enemy path to: " + path);
 
