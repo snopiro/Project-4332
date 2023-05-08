@@ -83,7 +83,6 @@ public class MouseController : MonoBehaviour
                 {
                     if (tm.GetPlayerTurn() && character.inRangeTiles.Contains(tile) && !tm.GetPlayerInputLock() && !gm.TileOccupiedByPlayerCharacter(tile))
                     {
-                        GameObject.Find("HitSound").GetComponent<AudioSource>().Play();
                         gm.EnemyUnitOnTile(tile).receiveDamage(character.attackStat);
                         tm.SendPlayerAttack();
                     }
