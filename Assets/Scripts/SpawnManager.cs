@@ -38,7 +38,7 @@ public class SpawnManager : MonoBehaviour
             tile = mapManager.Instance.FindTileInScene(playerSpawn);
             gm.AddCharacterToPlayerList(SpawnCharacterOnTile(character, tile));
             //edit this line below to change how players are placed after the first one
-            playerSpawn = new Vector2Int(playerSpawn.x + 1, playerSpawn.y);
+            playerSpawn = new Vector2Int(playerSpawn.x, playerSpawn.y+1);
         }
 
         foreach (var character in enemyCharacters)
@@ -46,7 +46,7 @@ public class SpawnManager : MonoBehaviour
             tile = mapManager.Instance.FindTileInScene(enemySpawn);
             gm.AddCharacterToEnemyList(SpawnCharacterOnTile(character, tile));
             //edit this line below to change how enemies are placed after the first one
-            enemySpawn = new Vector2Int(enemySpawn.x + 1, enemySpawn.y);
+            enemySpawn = new Vector2Int(enemySpawn.x, enemySpawn.y+1);
         }
     }
 

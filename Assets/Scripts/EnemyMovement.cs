@@ -12,6 +12,7 @@ public class EnemyMovement : CharacterInfo
     public float minMoveTime;
     public float maxMoveTime;
     OverlayTile tile;
+    private GeneralManager gm;
 
     private Vector2[] moveDirections = { Vector2.up, Vector2.down, Vector2.left, Vector2.right };
 
@@ -20,7 +21,7 @@ public class EnemyMovement : CharacterInfo
         tile = base.activeTile;
         pathFinder = new PathFinder();
         tm = GameObject.Find("GameManager").GetComponent<TurnManager>();
-
+        gm = GameObject.Find("GameManager").GetComponent<GeneralManager>();
         // Set initial movement direction
         //Vector2 direction = moveDirections[Random.Range(0, moveDirections.Length)];
         //StartCoroutine(Move(direction));
@@ -48,7 +49,13 @@ public class EnemyMovement : CharacterInfo
 
     IEnumerator Move()
     {
-        tile = base.inRangeTiles[Random.Range(0, base.inRangeTiles.Count())];
+        while (true) 
+        {
+            tile = base.inRangeTiles[Random.Range(0, base.inRangeTiles.Count())];
+            if (!gm.TileOccupiedByEnemyCharacter(tile))
+                break;
+            
+        }
         path = pathFinder.FindPath(base.activeTile, tile, base.inRangeTiles);
         Debug.Log("Setting enemy path to: " + path);
 

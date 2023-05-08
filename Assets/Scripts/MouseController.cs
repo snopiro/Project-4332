@@ -71,7 +71,7 @@ public class MouseController : MonoBehaviour
                 {
                     Debug.Log("Current Tile: " + tile.gridLocation);
                     Debug.Log("Character: " + character);
-                if (tm.GetPlayerTurn() && character.inRangeTiles.Contains(tile) && !tm.GetPlayerInputLock() && !gm.TileOccupiedByPlayerCharacter(tile))
+                if (tm.GetPlayerTurn() && character.inRangeTiles.Contains(tile) && !tm.GetPlayerInputLock() && !gm.TileOccupiedByPlayerCharacter(tile) && !gm.TileOccupiedByEnemyCharacter(tile))
                     {
                     Debug.Log("Updating Turn...");
                     tile.GetComponent<OverlayTile>().ShowTile(Color.white);
