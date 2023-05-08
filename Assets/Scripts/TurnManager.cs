@@ -22,6 +22,7 @@ public class TurnManager : MonoBehaviour
     bool playerHasAttacked;
     bool playerInputLock;
     bool playerHasMoved;
+    bool enemyDeathProcessed;
 
     public bool enemyMoved;
 
@@ -76,6 +77,7 @@ public class TurnManager : MonoBehaviour
         playerHasMoved = false;
         playerHasAttacked = false;
         playerInputLock = false;
+        enemyDeathProcessed = false;
         //***player turn code goes here***
         mc.SetControlledCharacter(gm.playerCharacters[playerIndex].GetComponent<CharacterInfo>());
         mc.GetControlledCharacter().GetInRangeTiles();
@@ -94,14 +96,12 @@ public class TurnManager : MonoBehaviour
         mc.GetControlledCharacter().ShowInRangeTiles(Color.red);
         Debug.Log("Waiting for player to attack");
         yield return new WaitUntil(() => playerHasAttacked);
-
         mc.GetControlledCharacter().isAttacking = false;
         playerInputLock = true;
         mc.GetControlledCharacter().HideInRangeTiles();
+        yield return new WaitUntil(() => enemyDeathProcessed);
         //*** player turn code goes above here***
-        //waits certain amount of time before updating next turn
 
-        //yield return new WaitForSeconds(delayTime);
         //sets player index to next in line
         if (playerIndex == gm.playerCharacters.Count() - 1)
         {
@@ -115,7 +115,7 @@ public class TurnManager : MonoBehaviour
         }
         Debug.Log("Setting player index to: " + playerIndex);
 
-        //)
+        
         //waits certain amount of time before updating next turn
         yield return new WaitForSeconds(delayTime);
         shouldUpdateTurn = true;
@@ -137,7 +137,7 @@ public class TurnManager : MonoBehaviour
 
 
         //***enemy turn code goes above here***
-        //waits certain amount of time before updating next turn
+
         yield return new WaitUntil(() => enemyMoved);
         //sets enemy index to next in line
         if (enemyIndex == gm.enemyCharacters.Count() - 1)
@@ -152,7 +152,7 @@ public class TurnManager : MonoBehaviour
         }
         Debug.Log("Setting enemy index to: " + enemyIndex);
 
-        //)
+        
         //waits certain amount of time before updating next turn
         yield return new WaitForSeconds(delayTime);
         shouldUpdateTurn = true;
@@ -185,6 +185,11 @@ public class TurnManager : MonoBehaviour
             //Debug.Log("returning player turn as false...");
             return false;
         }
+    }
+
+    public void ProcessEnemyDeath()
+    {
+        enemyDeathProcessed = true;
     }
 
     public bool GetPlayerInputLock()

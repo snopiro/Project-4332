@@ -18,19 +18,18 @@ public class EnemyMovement : CharacterInfo
 
     void Start()
     {
+        base.fullHeal();
         tile = base.activeTile;
         pathFinder = new PathFinder();
         tm = GameObject.Find("GameManager").GetComponent<TurnManager>();
         gm = GameObject.Find("GameManager").GetComponent<GeneralManager>();
-        // Set initial movement direction
-        //Vector2 direction = moveDirections[Random.Range(0, moveDirections.Length)];
-        //StartCoroutine(Move(direction));
+        
     }
 
 
     void LateUpdate()
     {
-        //        Debug.Log("Enemy Path count: " + path.Count());
+        //Debug.Log("Enemy Path count: " + path.Count());
         //Allow the character to move along the map.
         if (path.Count > 0 && base.isMoving)
         {
@@ -52,7 +51,7 @@ public class EnemyMovement : CharacterInfo
         while (true) 
         {
             tile = base.inRangeTiles[Random.Range(0, base.inRangeTiles.Count())];
-            if (!gm.TileOccupiedByEnemyCharacter(tile))
+            if (!gm.TileOccupiedByEnemyCharacter(tile) && !gm.TileOccupiedByPlayerCharacter(tile))
                 break;
             
         }

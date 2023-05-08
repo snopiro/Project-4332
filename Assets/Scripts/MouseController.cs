@@ -79,19 +79,22 @@ public class MouseController : MonoBehaviour
                     StartCoroutine(SendPlayerMovement());
                     }
                 }
-            else if (Input.GetMouseButtonDown(0) && character.isAttacking) //attacking function
-            {
-                if (tm.GetPlayerTurn() && character.inRangeTiles.Contains(tile) && !tm.GetPlayerInputLock() && !gm.TileOccupiedByPlayerCharacter(tile))
+                else if (Input.GetMouseButtonDown(0) && character.isAttacking) //attacking function
                 {
-                    gm.EnemyUnitOnTile(tile).receiveDamage(character.attackStat);
-            }
+                    if (tm.GetPlayerTurn() && character.inRangeTiles.Contains(tile) && !tm.GetPlayerInputLock() && !gm.TileOccupiedByPlayerCharacter(tile))
+                    {
+                        GameObject.Find("HitSound").GetComponent<AudioSource>().Play();
+                        gm.EnemyUnitOnTile(tile).receiveDamage(character.attackStat);
+                        tm.SendPlayerAttack();
+                    }
 
+                }
+                else if (Input.GetMouseButtonDown(1) && tm.turn == TurnManager.Turn.Player)
+                {
+                    tm.SendPlayerAttack(); //skip turn on right click
+                    tm.ProcessEnemyDeath();
+                }
             }
-            else if (Input.GetMouseButtonDown(1) && tm.turn == TurnManager.Turn.Player)
-            {
-                tm.SendPlayerAttack(); //skip turn on right click
-            }
-        }
     
 
             //Allow the character to move along the map.

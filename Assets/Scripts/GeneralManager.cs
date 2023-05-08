@@ -11,9 +11,12 @@ public class GeneralManager : MonoBehaviour
     public List<GameObject> playerCharacters;
     public List<GameObject> enemyCharacters;
 
+    public bool gameHasStarted;
+
     // Start is called before the first frame update
     void Start()
     {
+        gameHasStarted = false;
         turnManager = GetComponent<TurnManager>();
         spawnManager = GetComponent<SpawnManager>();
 
@@ -25,24 +28,24 @@ public class GeneralManager : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
         //Your Function You Want to Call
-        //sets player character to first in spawn manager list
-        //mc.SetControlledCharacter(playerCharacters[0].GetComponent<CharacterInfo>());
-        //turnManager.UpdateTurn();
-        //turnManager.ExecutePlayerTurn();
+        gameHasStarted = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(playerCharacters.Count() == 0)
+        if (gameHasStarted)
         {
-            EndGameDefeat();
+            if (playerCharacters.Count() == 0)
+            {
+                EndGameDefeat();
+            }
+
+            if (enemyCharacters.Count() == 0)
+            {
+                EndGameVictory();
+            }
         }
-        
-        if(enemyCharacters.Count() == 0)
-        {
-            EndGameVictory();
-    }
     }
 
     public void AddCharacterToPlayerList(GameObject character)
@@ -53,6 +56,15 @@ public class GeneralManager : MonoBehaviour
     public void AddCharacterToEnemyList(GameObject character)
     {
         enemyCharacters.Add(character);
+    }
+
+    public void RemovePlayerCharacterFromList(GameObject character)
+    {
+        playerCharacters.Remove(character);
+    }
+    public void RemoveEnemyCharacterFromList(GameObject character)
+    {
+        enemyCharacters.Remove(character);
     }
 
     //returns true if there is a player character whose activeTile is asked tile
@@ -98,12 +110,12 @@ public class GeneralManager : MonoBehaviour
     //functionality for player victory
     void EndGameVictory()
     {
-
+        Debug.Log("VICTORY!!!");
     }
 
     //functionality for player defeat
     void EndGameDefeat()
     {
-
+        Debug.Log("defeat...");
     }
 }
