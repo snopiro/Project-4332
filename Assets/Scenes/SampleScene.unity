@@ -6034,7 +6034,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 7.6880465
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -6213,19 +6213,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2189098186915972239, guid: 07d993e1e2f869c418618dd2943ba4d6, type: 3}
       propertyPath: enemySpawn.x
-      value: 2
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2189098186915972239, guid: 07d993e1e2f869c418618dd2943ba4d6, type: 3}
+      propertyPath: enemySpawn.y
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2189098186915972239, guid: 07d993e1e2f869c418618dd2943ba4d6, type: 3}
       propertyPath: playerSpawn.x
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2189098186915972239, guid: 07d993e1e2f869c418618dd2943ba4d6, type: 3}
       propertyPath: playerSpawn.y
-      value: 2
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2189098186915972239, guid: 07d993e1e2f869c418618dd2943ba4d6, type: 3}
+      propertyPath: enemyCharacters.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2189098186915972239, guid: 07d993e1e2f869c418618dd2943ba4d6, type: 3}
       propertyPath: playerCharacters.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2189098186915972239, guid: 07d993e1e2f869c418618dd2943ba4d6, type: 3}
       propertyPath: playerCharacters.Array.data[1]

@@ -7,14 +7,10 @@ public class EnemyMovement : CharacterInfo
 {
 
     private List<OverlayTile> path = new List<OverlayTile>();
-    private PathFinder pathFinder;
 
     public float minMoveTime;
     public float maxMoveTime;
     OverlayTile tile;
-    private GeneralManager gm;
-
-    private Vector2[] moveDirections = { Vector2.up, Vector2.down, Vector2.left, Vector2.right };
 
     void Start()
     {
@@ -33,10 +29,10 @@ public class EnemyMovement : CharacterInfo
         //Allow the character to move along the map.
         if (path.Count > 0 && base.isMoving)
         {
-            Debug.Log("Moving enemy");
+            Debug.Log(gameObject.name + "is moving");
             base.MoveAlongPath(path);
         }
-
+        base.KnockBackWrapper();
 
     }
 
@@ -51,7 +47,7 @@ public class EnemyMovement : CharacterInfo
         while (true) 
         {
             tile = base.inRangeTiles[Random.Range(0, base.inRangeTiles.Count())];
-            if (!gm.TileOccupiedByEnemyCharacter(tile) && !gm.TileOccupiedByPlayerCharacter(tile))
+            if (!base.gm.TileOccupiedByEnemyCharacter(tile) && !base.gm.TileOccupiedByPlayerCharacter(tile))
                 break;
             
         }

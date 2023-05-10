@@ -68,22 +68,22 @@ public class MouseController : MonoBehaviour
 
 
             if (Input.GetMouseButtonDown(0) && !character.isAttacking)
-                {
-                    Debug.Log("Current Tile: " + tile.gridLocation);
-                    Debug.Log("Character: " + character);
+            {
+                Debug.Log("Current Tile: " + tile.gridLocation);
+                Debug.Log("Character: " + character);
                 if (tm.GetPlayerTurn() && character.inRangeTiles.Contains(tile) && !tm.GetPlayerInputLock() && !gm.TileOccupiedByPlayerCharacter(tile) && !gm.TileOccupiedByEnemyCharacter(tile))
                     {
-                    Debug.Log("Updating Turn...");
-                    tile.GetComponent<OverlayTile>().ShowTile(Color.white);
+                        Debug.Log("Updating Turn...");
+                        tile.GetComponent<OverlayTile>().ShowTile(Color.white);
                         character.isMoving = true;
-                    StartCoroutine(SendPlayerMovement());
+                        StartCoroutine(SendPlayerMovement());
                     }
                 }
                 else if (Input.GetMouseButtonDown(0) && character.isAttacking) //attacking function
                 {
                     if (tm.GetPlayerTurn() && character.inRangeTiles.Contains(tile) && !tm.GetPlayerInputLock() && !gm.TileOccupiedByPlayerCharacter(tile))
                     {
-                        gm.EnemyUnitOnTile(tile).receiveDamage(character.attackStat);
+                        gm.EnemyUnitOnTile(tile).receiveDamage(character.attackStat, character);
                         tm.SendPlayerAttack();
                     }
 

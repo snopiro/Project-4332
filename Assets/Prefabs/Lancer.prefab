@@ -418,7 +418,7 @@ MonoBehaviour:
   currentHealth: 0
   healthbar: {fileID: 5225940716109548490}
   movingAudio: {fileID: 1516109930774362060}
-  attackStat: 10
+  attackStat: 2
   range: 4
   attackRange: 2
 --- !u!1839735485 &1831756091
