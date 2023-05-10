@@ -138,4 +138,15 @@ public class mapManager : MonoBehaviour
         }
         return null;
     }
+
+    //returns a list of the entire map
+    public List<OverlayTile> GetEntireMap()
+    {
+        List<OverlayTile> tiles = new List<OverlayTile>();
+        foreach (var tile in map)
+        {
+            tiles.Add(tile.Value);
+        }
+        return tiles;
+    }
 }
